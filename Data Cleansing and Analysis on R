@@ -1,0 +1,93 @@
+
+getwd()
+#Import the datasets into R and replace empty values with NA
+dg_read<- read.csv("Demographic data.csv",na.strings = c("","NA"))
+cb_data <- read.csv("Credit Bureau data.csv")
+
+#Checking the structure of the data
+
+str(dg_read)
+
+str(cb_data)
+
+##Removing Duplicates
+dg_read<-dg_read[!duplicated(dg_read$Application.ID),]
+
+cb_data<-cb_data[!duplicated(cb_data$Application.ID),]
+
+#Compare Application IDs in demographic data and credit bureau data ,
+#check for differences in Application ID across the 2 files
+
+setdiff(cb_data$Application.ID,dg_read$Application.ID) # if mismatch is there we will get the count of those rows else we get 0
+
+#Check for defaulter %
+
+(sum(dg_read$Performance.Tag,na.rm=TRUE)/nrow(dg_read) )*100
+
+(sum(cb_data$Performance.Tag,na.rm=TRUE)/nrow(cb_data))*100
+
+#Checking for missing values
+
+(sum(is.na(dg_read))/nrow(dg_read))*100
+
+(sum(is.na(cb_data))/nrow(cb_data))*100
+
+
+summary(dg_read)
+
+summary(cb_data)
+
+
+#Omit the rows which are NA, post analysis of the summary we come to this conclusion
+
+dg_read_clean<- data.frame(na.omit(dg_read))
+
+
+library(dplyr) #calling the dplyr library
+
+##credit bureau -Missing values
+
+# again comparing dg_read and cb_data dateset and matching Application IDs so 
+#this will filter out all the application IDs from
+# cb_data which are not availble in dg_read anymore
+
+cb_data_subset<- cb_data %>%filter(Application.ID %in% dg_read_clean$Application.ID)
+
+#checking for missing values in filtered credut bureau dataset
+
+(sum(is.na(cb_data_subset))/nrow(cb_data_subset))*100
+
+summary (cb_data_subset)
+
+
+#Removes NA records in No. of trades opened
+
+cb_data_subset<-cb_data_subset[-c(which(is.na(cb_data_subset$No.of.trades.opened.in.last.6.months))),]
+
+sum(is.na(cb_data_subset)) #checking number of NA
+
+cb_data_subset<-cb_data_subset[-c(which(is.na(cb_data_subset$Presence.of.open.home.loan))),] #removing NA in Presence of Open Home Loan
+
+sum(is.na(cb_data_subset))
+
+#Checking for invalid values
+
+summary(dg_read_clean)
+
+#Age and Income have values less than 0
+
+sum(dg_read_clean$Age<=0)
+
+sum(dg_read_clean$Income<0)
+
+#Replace  Age <=with median and income <0 with 0
+dg_read_clean$Age<-ifelse(dg_read_clean$Age<=0, median(dg_read_clean$Age),dg_read_clean$Age)
+
+summary(dg_read_clean$Age)
+
+dg_read_clean$Income<-ifelse(dg_read_clean$Income<0,0,dg_read_clean$Income)
+
+summary(dg_read_clean$Income)
+
+
+
