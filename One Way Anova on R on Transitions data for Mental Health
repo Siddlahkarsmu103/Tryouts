@@ -1,0 +1,90 @@
+#Pulling the data
+
+final <- read.csv("Final.csv")
+
+
+
+
+library("dplyr")
+pre <- final %>% select(ï..A_number,Firstlanguage,Internationvisa,Gender,Program,Collegeyear,Ethnicity,Pre_Knowtotal,Pre_stigmatotal,Pre_helptotal,Pre_GHQtotal,Pre_stresstotal)
+
+a<-final %>% select(Pre_Knowtotal)
+b<-final %>% select(Pre_stigmatotal)
+c<-final %>% select(Pre_helptotal)
+d<-final %>% select(Pre_GHQtotal)
+e<-final %>% select(Pre_stresstotal)
+
+#to find the mean
+mean(a[["Pre_Knowtotal"]])
+mean(b[["Pre_stigmatotal"]])
+mean(c[["Pre_helptotal"]])
+mean(d[["Pre_GHQtotal"]])
+mean(e[["Pre_stresstotal"]])
+
+#finding standard deviation
+sd(a$Pre_Knowtotal)
+sd(b$Pre_stigmatotal)
+sd(c$Pre_helptotal)
+sd(d$Pre_GHQtotal)
+sd(e$Pre_stresstotal)
+
+cor(pre[,"Pre_Knowtotal"],pre[,"Pre_helptotal"])
+cor(pre[,"Pre_stigmatotal"],pre[,"Pre_helptotal"])
+cor(pre[,"Pre_stigmatotal"],pre[,"Pre_GHQtotal"])
+cor(pre[,"Pre_Knowtotal"],pre[,"Pre_GHQtotal"])
+cor(pre[,"Pre_Knowtotal"],pre[,"Pre_stigmatotal"])
+cor(pre[,"Pre_GHQtotal"],pre[,"Pre_stresstotal"])
+
+
+post<- final %>% select(ï..A_number,Firstlanguage,Internationvisa,Gender,Program,Collegeyear,Ethnicity,Post_Knowtotal,Post_stigmatotal,Post_helptotal)
+
+mean(post$Post_Knowtotal)
+mean(post$Post_stigmatotal)
+mean(post$Post_helptotal)
+
+sd(final$Post_Knowtotal)
+sd(final$Post_stigmatotal)
+sd(final$Post_helptotal)
+
+cor(post[,"Post_Knowtotal"],post[,"Post_stigmatotal"])
+cor(post[,"Post_Knowtotal"],post[,"Post_helptotal"])
+cor(post[,"Post_stigmatotal"],post[,"Post_helptotal"])
+
+
+#One Way Anova
+
+# Language and Preknowledge
+library ("dplyr")
+
+langkno<- final %>% select(ï..A_number,Firstlanguage,Pre_Knowtotal)
+
+write.csv(langkno, file = "langkno.csv",row.names=FALSE, na="")
+
+table(langkno$Firstlanguage)
+barplot(table(langkno$Firstlanguage))
+
+#One way anova for international student
+library("dplyr")
+
+internal<- final %>% select (Internationvisa,Pre_Knowtotal)
+
+barplot(table(internal$sum(Pre_Knowtotal)))
+
+
+# creating a bar chart
+library("ggplot2")
+
+internal.agg<- aggregate(Pre_Knowtotal ~ Internationvisa,internal, mean)
+internal.agg<- round(internal.agg,1)
+
+ggplot(internal.agg,aes(Internationvisa,Pre_Knowtotal, label=Pre_Knowtotal)) + geom_bar(stat = "identity") + geom_text()
+
+#anova
+analysis <- lm(Pre_Knowtotal~as.factor(Internationvisa),data = internal)
+anova(analysis)
+
+
+
+
+
+
