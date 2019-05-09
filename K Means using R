@@ -1,0 +1,27 @@
+# Using Iris data from UCI Machine Learning Repository
+
+Iris_Actual <- read.csv("iris.data", header = F)
+names(Iris_Actual)[1] <- "sepal.length"
+names(Iris_Actual)[2] <- "sepal.width"
+names(Iris_Actual)[3] <- "petal.length"
+names(Iris_Actual)[4] <- "petal.width"
+names(Iris_Actual)[5] <- "class"
+
+Iris <- read.csv("iris.data", header = F)
+
+library('dplyr')
+Iris <- Iris %>% select(V1,V2,V3,V4)
+
+library(data.table)
+# Renaming the columns
+names(Iris)[1] <- "sepal.length"
+names(Iris)[2] <- "sepal.width"
+names(Iris)[3] <- "petal.length"
+names(Iris)[4] <- "petal.width"
+
+results <- kmeans(Iris, 3)
+results
+
+table(Iris_Actual$class, results$cluster)
+
+plot(Iris[c("petal.length", "petal.width")], col=results$cluster)
