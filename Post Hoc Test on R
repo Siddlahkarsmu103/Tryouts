@@ -1,0 +1,21 @@
+getwd()
+
+#Importing data for Female Passengers on Titanic
+femalepass<- read.csv("TitanicFemalePassengers.csv")
+
+femalepass
+
+
+TitanicFemaletable<- table(femalepass$survived,femalepass$pclass)
+
+TitanicFemaletable
+
+#Chi sq test to find residual table and performing Post Hoc analysis to find the impacted group
+chisq.test(TitanicFemaletable,correct = FALSE)$stdres
+
+sig<-0.05
+
+sigadj<-sig/(nrow(TitanicFemaletable)*ncol(TitanicFemaletable))
+sigadj
+
+qnorm(sigadj/2)
