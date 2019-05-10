@@ -1,0 +1,333 @@
+//----------------------------- Landing Page------------------------------------------------
+<html>
+<head>
+<title>main.php</title>
+<link rel="stylesheet" type="text/css" href="styles.css"/>
+</head>
+
+<body style="background: linear-gradient(rgba(0,0,50,0.5),rgba(0,0,50,0.5)),url(backgroundimage.jpeg)">
+
+<div>
+  <h1 style="color:white;text-align:center">Welcome to Halifax Science Library</h1>
+</div>
+
+<div class="topnav">
+  <a class="active" href="main.php">Home</a>
+  <a href="showTables.php">List of Tables </a>
+  <a href="getTableName.php">View Data of given tables</a>
+  <a href="NewArticle.php">Add new Article </a>
+  <a href="NewCustomer.php">Add new Customer</a>
+  <a href="NewTransaction.php">Add new Transaction </a>
+  <a href="get_transaction_Number.php">Cancel Transaction</a>
+</div>
+
+
+</body>
+
+</html>
+
+//---------------------------Add Article  Page------------------------------------------------
+<html>
+<head>
+<title>
+NewArticle.php
+</title>
+</head>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* Style the header */
+.header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #685b4a;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+</style>
+
+<body style="background: linear-gradient(rgba(0,0,50,0.5),rgba(0,0,50,0.5)),url(backgroundimage.jpeg)">
+
+<div>
+  <h1 style="color:white;text-align:center">Welcome to Halifax Science Library</h1>
+</div>
+
+<div class="topnav">
+ <a class="active" href="main.php">Home</a>
+  <a href="showTables.php">List of Tables </a>
+  <a href="getTableName.php">View Data of given tables</a>
+  <a href="NewArticle.php">Add new Article </a>
+  <a href="NewCustomer.php">Add new Customer</a>
+  <a href="NewTransaction.php">Add new Transaction </a>
+  <a href="get_transaction_Number.php">Cancel Transaction</a>
+</div>
+<h2 style="font-family: sans-serif; font-size: 20px;text-align:center;color:white">Add a new Article</h2>
+<div class ="Web-form" style="margin-left:300px;font-family: sans-serif; font-size: 15px;color:#fff">	
+<form action="Add article.php" method ="POST">
+<b>
+<br>
+Magazine:
+<input type="text" name="magazineID" placeholder="magazine ID" style="background:transparent;border:none;margin-left:50px;border-bottom:1px solid grey;color: #fff;font-size:18px;marin-bottom:16px">
+</b>
+<b>
+<br>
+<br>
+Pages:
+<input type="text" name="pages" placeholder="pages" style="background:transparent;border:none;border-bottom:1px solid grey;margin-left:75px;color: #fff;font-size:18px;marin-bottom:16px">
+</b>
+<b>
+<br>
+<br>
+Article Title:
+<input type="text" name="title" placeholder="Article title" style="background:transparent;border:none;border-bottom:1px solid grey; margin-left:35px;color: #fff; font-size:18px; margin-bottom:16px">
+</b>
+<br>
+<br>
+<br>
+
+<table id="MulItems">
+<tr><th style="color:white">Author First name</th><th style="color:white">Author Last name</th></tr>
+</table>
+<br>
+<br>
+<br>
+<br>
+<input type="submit" value="Add Article +" style="color: #fff;background-color: #f95e05;border:none;font-size:18px;width: 350px;margin-left:50px;height:50px">
+<input type="button" value="Add Author  +"  onclick="addText()" style="color: #fff;background-color: #f95e05;border:none;font-size:18px;width:150px;margin-left:50px;height:50px">
+<input type="button" value="Remove Author -"  onclick="removeText()" style="color: #fff;background-color: #f95e05;border:none;font-size:18px;width:150px;margin-left:50px;height:50px">
+
+</div>
+
+</br>
+</body>
+<script>
+
+
+function addText() {
+  // Get a reference to the table
+  let tableRef = document.getElementById("MulItems");
+
+  // Insert a row at the end of the table
+  let newRow = tableRef.insertRow(-1);
+
+  // Insert a cell in the row at index 0
+  let newCell1 = newRow.insertCell(0);
+  let newCell2 = newRow.insertCell(1);
+  let HTMLPiece1 = document.createElement("INPUT");
+  HTMLPiece1.setAttribute("type", "text");
+  HTMLPiece1.setAttribute("placeholder", "Author First Name");
+  HTMLPiece1.setAttribute("name", "author_fname[]");
+
+  let HTMLPiece2 = document.createElement("INPUT");
+  HTMLPiece2.setAttribute("type", "text");
+  HTMLPiece2.setAttribute("placeholder", "Author Last Name");
+  HTMLPiece2.setAttribute("name", "author_lname[]");
+  // Append a text node to the cell
+  newCell1.appendChild(HTMLPiece1);
+  newCell2.appendChild(HTMLPiece2);
+}
+
+function removeText() { 
+	let tableRef = document.getElementById("MulItems");
+	let rowCount = tableRef.rows.length;
+	console.log(rowCount);
+    tableRef.deleteRow(rowCount -1);
+}
+
+
+addText();
+
+</script>
+
+</html>
+//-----------------------------------------------------------------------------
+
+<html>
+<head>
+<title>
+Add article.php
+</title>
+</head>
+
+<body style="background: linear-gradient(rgba(0,0,50,0.5),rgba(0,0,50,0.5)),url(backgroundimage.jpeg);margin-left:150px;margin-top:30px;font-family: sans-serif; font-size: 32px; color:#fff">
+
+<?php
+//$articleID = $_POST["articleID"];
+$title = $_POST["title"];
+$magazineID = $_POST["magazineID"];
+//$volumeNumber = $_POST["volumeNumber"];
+$pages = $_POST["pages"];
+$author_fname = $_POST["author_fname"];
+$author_lname = $_POST["author_lname"];
+
+
+if (strlen($title)==0 || sizeof($author_fname)==0 || sizeof($author_lname)==0 || strlen($magazineID)==0){
+	print "<p><p>!!! Cannot add a new course with empty title or author or MagazineID !!!";
+}else{
+
+	require("/home/student_2019_winter/s_vijayakumar/db.php");
+	$table = "article";
+
+	$link = mysqli_connect($host, $user, $pass, $db);
+
+	if (!$link) die("Couldn't connect to MySQL");
+
+	mysqli_select_db($link, $db)
+			or die("Couldn't open $db: ".mysqli_error($link));
+	$sql="SELECT * FROM `article` WHERE `ArticleName`='$title' and `MagazineID`='$magazineID'";
+	//$sql="Select * from article where title='$title' and magazineID='$magazineID' and volumeNumber='$volumeNumber' and authors='$author'";
+	$result = mysqli_query($link,$sql);
+	$count = mysqli_num_rows($result);
+	 
+		if($count>0)
+		{
+			print  "<p>Record Exists";
+		}
+		else
+		{		
+			$query = "INSERT INTO `article`(`ArticleName`, `MagazineID`, `PageNumber`) VALUES ('$title',$magazineID,'$pages') "; //'$volumeNumber','$author'
+			print "<p><p>Article registered in our archives!!";
+
+			$ok = mysqli_query($link, $query);
+			$articleID = mysqli_insert_id($link);
+			
+			for($i=0;$i<count($author_fname);$i++){
+				$query="INSERT INTO `AUTHOR`(`lname`, `fname`, `ArticleID`) VALUES ('$author_lname[$i]', '$author_fname[$i]', '$articleID')";
+				$ok = mysqli_query($link, $query);
+				//$author_id = mysqli_insert_id($link);
+			}
+			
+			if (!$ok) 
+				print "SQL error: ".mysqli_error($link);
+		}
+
+	mysqli_close($link);
+}
+
+?>
+<br>
+<br>
+<a href= " NewArticle.php"> Add a New Article </a>
+
+</body>
+</html>
+
+//----------------------------------------------Record Transaction Page-------------------------------------------
+
+<html>
+<head>
+<title>
+NewTranscation.php
+</title>
+</head>
+
+
+
+<body style="background: linear-gradient(rgba(0,0,50,0.5),rgba(0,0,50,0.5)),url(backgroundimage.jpeg)">
+
+<div>
+  <h1 style="color:white;text-align:center">Welcome to Halifax Science Library</h1>
+</div>
+
+<div class="topnav">
+  <a class="active" href="main.php">Home</a>
+  <a href="showTables.php">List of Tables </a>
+  <a href="getTableName.php">View Data of given tables</a>
+  <a href="NewArticle.php">Add new Article </a>
+  <a href="NewCustomer.php">Add new Customer</a>
+  <a href="get_transaction_Number.php">Add new Transaction </a>
+  <a href="get_transaction_Number.php">Cancel Transaction</a>
+</div>
+<h2 style="font-family: sans-serif; font-size: 20px;text-align:center;color:white">Add Trasaction</h2>
+<div class ="Web-form" id="web-form" style="margin-left:300px;font-family: sans-serif; font-size: 15px;color:#fff">	
+
+<form action="Addtransaction.php" id = "frmAdd" method ="POST">
+<b>
+<br>
+Customer ID:
+<input type="text" name="cid" placeholder="Customer Id" style="background:transparent;border:none;margin-left:100px;border-bottom:1px solid grey;color: #fff;font-size:18px;marin-bottom:16px">
+</b>
+<b>
+<br>
+<br>
+<table id="MulItems">
+<tr><th>Item ID</th><th>Item Price</th></tr>
+</table>
+<input type="submit" value="Submit Transactions +" style="color: #fff;background-color: #f95e05;border:none;font-size:18px;width: 350px;margin-left:50px;height:50px">
+</form>
+<input type="button" value="Add Item +"  onclick="addText()" style="color: #fff;background-color: #f95e05;border:none;font-size:18px;width:150px;margin-left:50px;height:50px">
+<input type="button" value="Remove Item -"  onclick="removeText()" style="color: #fff;background-color: #f95e05;border:none;font-size:18px;width:150px;margin-left:50px;height:50px">
+
+</div>
+
+</br>
+</body>
+<script>
+
+
+function addText() {
+  // Get a reference to the table
+  let tableRef = document.getElementById("MulItems");
+
+  // Insert a row at the end of the table
+  let newRow = tableRef.insertRow(-1);
+
+  // Insert a cell in the row at index 0
+  let newCell1 = newRow.insertCell(0);
+  let newCell2 = newRow.insertCell(1);
+  let HTMLPiece1 = document.createElement("INPUT");
+  HTMLPiece1.setAttribute("type", "text");
+  HTMLPiece1.setAttribute("placeholder", "Item Id");
+  HTMLPiece1.setAttribute("name", "Itemid[]");
+
+  let HTMLPiece2 = document.createElement("INPUT");
+  HTMLPiece2.setAttribute("type", "text");
+  HTMLPiece2.setAttribute("placeholder", "Item Price");
+  HTMLPiece2.setAttribute("name", "Itemprice[]");
+  // Append a text node to the cell
+  newCell1.appendChild(HTMLPiece1);
+  newCell2.appendChild(HTMLPiece2);
+}
+
+function removeText() { 
+	let tableRef = document.getElementById("MulItems");
+	let rowCount = tableRef.rows.length;
+	console.log(rowCount);
+    tableRef.deleteRow(rowCount -1);
+}
+
+
+addText();
+
+</script>
+</html>
+
+
+
+
