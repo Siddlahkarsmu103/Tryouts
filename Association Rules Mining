@@ -1,0 +1,46 @@
+install.packages("arules")
+install.packages("plyr", dependencies = TRUE)
+library(arules)
+library(plyr)
+install.packages('dplyr')
+library(dplyr)
+
+#Reading the whole dataset
+df_online= read.csv("OnlineStore.csv")
+View(df_online)
+
+#Filtering two columns
+#df_online= df_online%>%select(InvoiceNo,Description)
+#View(df_online)
+
+df_user = ddply(df_online,c("InvoiceNo"),function(dfl)paste(dfl$Description, collapse = ","))
+
+View(df_user)
+
+df_user$InvoiceNo = NULL
+
+write.table(df_user,"OnlineStore2.csv", quote=FALSE, row.names = FALSE, col.names = FALSE)
+
+#-----------------------------------------------------------------------------
+tr = read.transactions("OnlineStore2.csv",format="basket",sep=",")
+summary(tr)
+itemFrequencyPlot(tr, topN=10)
+rules = apriori(tr,parameter = list(supp=0.2,conf=0.5))
+rules = apriori(tr,parameter = list(supp=0.3,conf=0.5))
+rules = apriori(tr,parameter = list(supp=0.02,conf=0.5))
+inspect(sort(rules,by='lift'))
+
+
+inspect(rules)
+
+
+#------------------------------------------------------------------------------
+
+
+itemsets=unique(generatingItemsets(rules))
+itemsets
+inspect(itemsets)
+---------------------------------------------------------
+m  
+maximal.sets = apriori(tr,parameter = list(supp=0.01,conf=0.5,target = "maximally frequent itemsets"))
+inspect(sort(maximal.sets,by='count'))
