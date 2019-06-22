@@ -1,0 +1,125 @@
+#Importing the libraries
+library(rpart)
+library(rpart.plot)
+
+#Import Dataset
+car <- read.csv("car.csv", header = T)
+car
+
+
+# Splitting the datasets
+set.seed(100)
+train <- sample(nrow(car), 0.7*nrow(car), replace = FALSE)
+TrainSet <- car[train,]
+ValidSet <- car[-train,]
+summary(TrainSet)
+summary(ValidSet)
+
+
+#Creating the tree
+treecar = rpart(shouldBuy~., data = TrainSet, method = "class",  control = rpart.control(minsplit = 30))
+treecar
+
+rpart.plot(treecar)
+
+#Predict to create confusion matrix
+predcar = predict(treecar, newdata = TrainSet, type = "class")
+predcar
+
+treeCar=table(TrainSet[,7],predcar)
+treeCar
+sum(diag(treeCar))/sum(treeCar)
+
+
+predcarprob = predict(treecar, newdata = TrainSet, type = "prob")
+predcarprob
+
+library(pROC)
+install.packages("pROC")
+
+roc(TrainSet[,7],predcarprob[,2])
+
+roc(TrainSet[,7],predcarprob[,1])
+
+roc(TrainSet[,7],predcarprob[,3])
+
+roc(TrainSet[,7],predcarprob[,4])
+
+#ROC curve between Sensitivity and specificity
+plot(roc(TrainSet[,7],predcarprob[,2]))
+
+plot(roc(TrainSet[,7],predcarprob[,1]))
+
+plot(roc(TrainSet[,7],predcarprob[,3]))
+
+plot(roc(TrainSet[,7],predcarprob[,4]))
+
+
+
+#--------------------------------------------
+
+#Creating the tree
+treecar1 = rpart(shouldBuy~., data = TrainSet, method = "class",  control = rpart.control(minsplit = 20))
+treecar1
+
+predcar1 = predict(treecar1, newdata = TrainSet, type = "class")
+predcar1
+
+treeCar1 =table(TrainSet[,7],predcar1)
+treeCar1
+sum(diag(treeCar1))/sum(treeCar1)
+
+#--------------------------------------------
+
+#Creating the tree
+treecar2 = rpart(shouldBuy~., data = TrainSet, method = "class",  control = rpart.control(minsplit = 10))
+treecar2
+
+predcar2 = predict(treecar2 , newdata = TrainSet, type = "class")
+predcar2
+
+treeCar2 =table(TrainSet[,7],predcar2)
+treeCar2
+sum(diag(treeCar2))/sum(treeCar2)
+
+
+#---------------------------Test Dataset---------------------------------
+
+
+#Creating the tree
+treecarvalid = rpart(shouldBuy~., data = ValidSet, method = "class",  control = rpart.control(minsplit = 30))
+treecarvalid
+
+rpart.plot(treecarvalid)
+
+#Predict to create confusion matrix
+predcarvalid = predict(treecarvalid, newdata = ValidSet, type = "class")
+predcarvalid
+
+treeCarvalid =table(ValidSet[,7],predcarvalid)
+treeCarvalid
+sum(diag(treeCarvalid))/sum(treeCarvalid)
+
+
+predcarprobvalid = predict(treecarvalid, newdata = ValidSet, type = "prob")
+predcarprobvalid
+
+library(pROC)
+install.packages("pROC")
+
+roc(ValidSet[,7],predcarprobvalid[,1])
+roc(ValidSet[,7],predcarprobvalid[,2])
+roc(ValidSet[,7],predcarprobvalid[,3])
+roc(ValidSet[,7],predcarprobvalid[,4])
+
+
+
+#ROC curve between Sensitivity and specificity
+plot(roc(TrainSet[,7],predcarprob[,2]))
+
+plot(roc(TrainSet[,7],predcarprob[,1]))
+
+plot(roc(TrainSet[,7],predcarprob[,3]))
+
+plot(roc(TrainSet[,7],predcarprob[,4]))
+
