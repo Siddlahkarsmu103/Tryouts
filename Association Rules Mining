@@ -6,7 +6,7 @@ install.packages('dplyr')
 library(dplyr)
 
 #Reading the whole dataset
-df_online= read.csv("OnlineStore.csv")
+df_online= read.csv("dataset_name.csv")
 View(df_online)
 
 #Filtering two columns
@@ -19,7 +19,7 @@ View(df_user)
 
 df_user$InvoiceNo = NULL
 
-write.table(df_user,"OnlineStore2.csv", quote=FALSE, row.names = FALSE, col.names = FALSE)
+write.table(df_user,"data_set2.csv", quote=FALSE, row.names = FALSE, col.names = FALSE)
 
 #-----------------------------------------------------------------------------
 tr = read.transactions("OnlineStore2.csv",format="basket",sep=",")
